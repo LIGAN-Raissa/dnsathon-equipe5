@@ -1,0 +1,10 @@
+# Secrets locaux : générés par scripts/generate-certs.sh
+certs/*.key
+certs/*.crt
+certs/*.env
+.env
+!certs/*.example
+
+package-lock.json
+node_modules/
+*.log

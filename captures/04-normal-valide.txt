@@ -1,0 +1,8 @@
+# Capture 4 — situation normale (FRR-B)
+BGP routing table entry for 10.3.0.0/24, version 19
+Paths: (1 available, best #1, table default)
+  Not advertised to any peer
+  65003
+    172.16.100.3 from 172.16.100.3 (172.16.100.3)
+      Origin IGP, metric 0, localpref 200, valid, external, best (First path received), rpki validation-state: valid
+      Last update: Thu Nov 26 12:25:52 2026

@@ -1,0 +1,30 @@
+# Capture 7 — configuration RPKI + route-map ROV-IN (FRR-B)
+route-map ROV-IN deny 10
+ match rpki invalid
+exit
+!
+route-map ROV-IN permit 20
+ match rpki valid
+ set local-preference 200
+exit
+!
+route-map ROV-IN permit 30
+ match rpki notfound
+ set local-preference 100
+exit
+!
+password zebra
+!
+interface eth0
+ description LAN-AS65002
+ ip address 10.2.0.1/24
+exit
+!
+interface eth1
+--
+rpki
+ rpki polling_period 30
+ rpki cache tcp 172.16.100.254 3323 preference 1
+exit
+!
+end

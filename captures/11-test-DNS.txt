@@ -1,0 +1,17 @@
+# Capture 11 — test DNS anycast
+;; ->>HEADER<<- opcode: QUERY, rcode: NOERROR, id: 15360
+;; flags: qr aa rd ra ; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0 
+;; QUESTION SECTION:
+;; localhost.	IN	A
+
+;; ANSWER SECTION:
+localhost.	10800	IN	A	127.0.0.1
+
+;; AUTHORITY SECTION:
+
+;; ADDITIONAL SECTION:
+
+;; Query time: 0 msec
+;; SERVER: 10.53.0.53
+;; WHEN: Thu Nov 26 13:02:09 2026
+;; MSG SIZE  rcvd: 43

@@ -1,0 +1,38 @@
+[NETTOYAGE] annonce et autorisations temporaires retirées :
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-3# configure terminal
+quay.io-frrouting-frr-3(config)# no ip prefix-list AS65003 seq 5
+quay.io-frrouting-frr-3(config)# no ip route 10.3.0.0/25 Null0
+quay.io-frrouting-frr-3(config)# end
+quay.io-frrouting-frr-3# 
+
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-3# configure terminal
+quay.io-frrouting-frr-3(config)# router bgp 65003
+quay.io-frrouting-frr-3(config-router)# address-family ipv4 unicast
+quay.io-frrouting-frr-3(config-router-af)# no network 10.3.0.0/25
+quay.io-frrouting-frr-3(config-router-af)# end
+quay.io-frrouting-frr-3# 
+
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-2# configure terminal
+quay.io-frrouting-frr-2(config)# no ip prefix-list AS65003 seq 5
+quay.io-frrouting-frr-2(config)# end
+quay.io-frrouting-frr-2# 
+
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-3# write memory
+Note: this version of vtysh never writes vtysh.conf
+Building Configuration...
+Integrated configuration saved to /etc/frr/frr.conf
+[OK]
+quay.io-frrouting-frr-3# clear bgp *
+quay.io-frrouting-frr-3#

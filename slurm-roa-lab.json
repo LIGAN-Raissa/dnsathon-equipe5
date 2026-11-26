@@ -1,0 +1,36 @@
+{
+  "slurmVersion": 1,
+  "validationOutputFilters": {
+    "prefixFilters": [],
+    "bgpsecFilters": []
+  },
+  "locallyAddedAssertions": {
+    "prefixAssertions": [
+      {
+        "asn": 65001,
+        "prefix": "10.1.0.0/24",
+        "maxPrefixLength": 24,
+        "comment": "ROA local equipe 5 - prefixe legitime"
+      },
+      {
+        "asn": 65003,
+        "prefix": "10.3.0.0/24",
+        "maxPrefixLength": 24,
+        "comment": "ROA local equipe 5 - rend 10.3.0.0/25 invalide"
+      },
+      {
+        "asn": 65001,
+        "prefix": "10.53.0.53/32",
+        "maxPrefixLength": 32,
+        "comment": "ROA local - resolveur anycast site A"
+      },
+      {
+        "asn": 65003,
+        "prefix": "10.53.0.53/32",
+        "maxPrefixLength": 32,
+        "comment": "ROA local - resolveur anycast site C"
+      }
+    ],
+    "bgpsecAssertions": []
+  }
+}

@@ -1,0 +1,3 @@
+# Capture 2 — cache RPKI (FRR-B)
+Connected to group 1
+rpki tcp cache 172.16.100.254 3323 pref 1 (connected)

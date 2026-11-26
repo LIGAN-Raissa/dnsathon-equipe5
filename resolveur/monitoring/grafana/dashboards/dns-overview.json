@@ -1,0 +1,132 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "id": 1,
+      "title": "Total Requêtes DNS",
+      "type": "stat",
+      "targets": [
+        { "expr": "dnsdist_queries", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "unit": "short" }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "id": 2,
+      "title": "Requêtes Bloquées / Dropped",
+      "type": "stat",
+      "targets": [
+        { "expr": "dnsdist_rule_drop", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": { "color": { "fixedColor": "red", "mode": "fixed" }, "unit": "short" }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "id": 3,
+      "title": "Requêtes DoH (HTTPS:443)",
+      "type": "stat",
+      "targets": [
+        { "expr": "dnsdist_doh_queries", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": { "color": { "fixedColor": "green", "mode": "fixed" }, "unit": "short" }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "id": 4,
+      "title": "Requêtes DoT (TLS:853)",
+      "type": "stat",
+      "targets": [
+        { "expr": "dnsdist_tls_queries", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": { "color": { "fixedColor": "blue", "mode": "fixed" }, "unit": "short" }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "id": 5,
+      "title": "Débit de requêtes en direct (QPS - Queries/sec)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(dnsdist_queries[10s])", "legendFormat": "Toutes les requêtes (QPS)", "refId": "A" },
+        { "expr": "rate(dnsdist_doh_queries[10s])", "legendFormat": "DoH (HTTPS)", "refId": "B" },
+        { "expr": "rate(dnsdist_tls_queries[10s])", "legendFormat": "DoT (TLS)", "refId": "C" }
+      ],
+      "fieldConfig": {
+        "defaults": { "custom": { "fillOpacity": 15, "lineWidth": 2 }, "unit": "reqps" }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "id": 6,
+      "title": "Attaques Bloquées & Bridation (Drops / Amplification)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(dnsdist_rule_drop[10s])", "legendFormat": "Attaques bloquées (Drops/sec)", "refId": "A" },
+        { "expr": "rate(dnsdist_dyn_blocked[10s])", "legendFormat": "IPs bannies dynamiquement", "refId": "B" }
+      ],
+      "fieldConfig": {
+        "defaults": { "color": { "fixedColor": "red", "mode": "fixed" }, "custom": { "fillOpacity": 30, "lineWidth": 2 }, "unit": "reqps" }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+      "id": 7,
+      "title": "Latence moyenne de résolution backend (ms)",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "dnsdist_latency_avg_100 / 1000", "legendFormat": "Latence moyenne (ms)", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "ms", "custom": { "fillOpacity": 10, "lineWidth": 2 } }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "id": 8,
+      "title": "État de santé du Backend Unbound",
+      "type": "stat",
+      "targets": [
+        { "expr": "dnsdist_servers_up", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "type": "value", "options": { "1": { "text": "OPÉRATIONNEL (UP)", "color": "green" }, "0": { "text": "PANNE (DOWN)", "color": "red" } } }
+          ]
+        }
+      }
+    }
+  ],
+  "refresh": "2s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["dns", "dnsdist", "hackathon"],
+  "time": { "from": "now-5m", "to": "now" },
+  "timepicker": { "refresh_intervals": ["2s", "5s", "10s"] },
+  "timezone": "browser",
+  "title": "DNSaton - Supervision Sécurité & Trafic",
+  "uid": "dnsaton-overview",
+  "version": 1
+}

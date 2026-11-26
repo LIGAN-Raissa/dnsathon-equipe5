@@ -1,0 +1,13 @@
+# Capture 5 — attaque visible, filtre retiré (FRR-B)
+BGP routing table entry for 10.3.0.0/25, version 5
+Paths: (1 available, best #1, table default)
+  Not advertised to any peer
+  65003
+    172.16.100.3 from 172.16.100.3 (172.16.100.3)
+      Origin IGP, metric 0, valid, external, best (First path received), rpki validation-state: invalid
+      Last update: Thu Nov 26 13:01:46 2026
+
+# FRR-C annonce toujours la /25
+ *>  10.3.0.0/25      0.0.0.0                  0             0 i
+ *>  10.53.0.53/32    0.0.0.0                  0             0 i
+

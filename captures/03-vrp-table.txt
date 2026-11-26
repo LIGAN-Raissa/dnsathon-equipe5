@@ -1,0 +1,9 @@
+# Capture 3 — table VRP (FRR-B)
+RPKI/RTR prefix table
+Prefix                                   Prefix Length  Origin-AS
+10.53.0.53                                  32 -  32   65001
+10.53.0.53                                  32 -  32   65003
+10.3.0.0                                    24 -  24   65003
+10.1.0.0                                    24 -  24   65001
+Number of IPv4 Prefixes: 4
+Number of IPv6 Prefixes: 0

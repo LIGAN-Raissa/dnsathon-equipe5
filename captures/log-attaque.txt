@@ -1,0 +1,109 @@
+[FRR-A] port 5004 — connecté
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-1# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 172.16.100.1, local AS number 65001 VRF default vrf-id 0
+BGP table version 2
+RIB entries 2, using 320 bytes of memory
+Peers 2, using 46 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+172.16.100.2    4      65002         0         0        0    0    0    never         Idle        0 N/A
+172.16.100.3    4      65003         0         0        0    0    0    never         Idle        0 N/A
+
+Total number of neighbors 2
+quay.io-frrouting-frr-1#
+[FRR-A] configuration appliquée et sauvegardée.
+[FRR-B] port 5005 — connecté
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-2# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 172.16.100.2, local AS number 65002 VRF default vrf-id 0
+BGP table version 1
+RIB entries 1, using 160 bytes of memory
+Peers 2, using 46 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+172.16.100.1    4      65001         0         0        0    0    0    never         Idle        0 N/A
+172.16.100.3    4      65003         0         0        0    0    0    never         Idle        0 N/A
+
+Total number of neighbors 2
+quay.io-frrouting-frr-2#
+[FRR-B] configuration appliquée et sauvegardée.
+[FRR-C] port 5008 — connecté
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-3# show ip bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 172.16.100.3, local AS number 65003 VRF default vrf-id 0
+BGP table version 2
+RIB entries 2, using 320 bytes of memory
+Peers 2, using 46 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+172.16.100.1    4      65001         0         0        0    0    0    never         Idle        0 N/A
+172.16.100.2    4      65002         0         0        0    0    0    never         Idle        0 N/A
+
+Total number of neighbors 2
+quay.io-frrouting-frr-3#
+[FRR-C] configuration appliquée et sauvegardée.
+[ATTAQUE] FRR-C annonce 10.3.0.0/25
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-3# configure terminal
+quay.io-frrouting-frr-3(config)# 
+< prefix-list AS65003 seq 5 permit 10.3.0.0/25 le 25
+quay.io-frrouting-frr-3(config)# ip route 10.3.0.0/25 Null0
+% Configuration applied with notes:
+No changes found to be committed!
+quay.io-frrouting-frr-3(config)# router bgp 65003
+quay.io-frrouting-frr-3(config-router)# address-family ipv4 unicast
+quay.io-frrouting-frr-3(config-router-af)# network 10.3.0.0/25
+quay.io-frrouting-frr-3(config-router-af)# end
+quay.io-frrouting-frr-3# 
+
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-3# write memory
+Note: this version of vtysh never writes vtysh.conf
+Building Configuration...
+Integrated configuration saved to /etc/frr/frr.conf
+[OK]
+quay.io-frrouting-frr-3# clear bgp *
+quay.io-frrouting-frr-3#
+[SANS FILTRE] 10.3.0.0/25 doit apparaître avec 'invalid' :
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-2# configure terminal
+quay.io-frrouting-frr-2(config)# 
+< prefix-list AS65003 seq 5 permit 10.3.0.0/25 le 25
+quay.io-frrouting-frr-2(config)# router bgp 65002
+quay.io-frrouting-frr-2(config-router)# address-family ipv4 unicast
+quay.io-frrouting-frr-2(config-router-af)# 
+<r-af)# no neighbor 172.16.100.3 route-map ROV-IN in
+quay.io-frrouting-frr-2(config-router-af)# end
+quay.io-frrouting-frr-2# 
+
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-2# show ip bgp 10.3.0.0/25
+BGP routing table entry for 10.3.0.0/25, version 5
+Paths: (1 available, best #1, table default)
+  Not advertised to any peer
+  65003
+    172.16.100.3 from 172.16.100.3 (172.16.100.3)
+      Origin IGP, metric 0, valid, external, best (First path received), rpki validation-state: invalid
+      Last update: Thu Nov 26 13:01:46 2026
+quay.io-frrouting-frr-2#

@@ -1,0 +1,7 @@
+# Capture 6 — rejet par ROV-IN (FRR-B)
+% Network not in table
+
+# FRR-C annonce TOUJOURS la /25
+ *>  10.3.0.0/25      0.0.0.0                  0             0 i
+ *>  10.53.0.53/32    0.0.0.0                  0             0 i
+

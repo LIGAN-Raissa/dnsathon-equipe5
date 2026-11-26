@@ -1,0 +1,14 @@
+===== BASCULE : coupure temporaire du peering AS65003 (FRR-C) =====
+Hello, this is FRRouting (version 10.7.1_git).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+
+quay.io-frrouting-frr-2# show ip bgp 10.53.0.53/32
+BGP routing table entry for 10.53.0.53/32, version 31
+Paths: (1 available, best #1, table default)
+  Not advertised to any peer
+  65001
+    172.16.100.1 from 172.16.100.1 (172.16.100.1)
+      Origin IGP, metric 0, valid, external, best (First path received), rpki validation-state: valid
+      Last update: Thu Nov 26 13:01:52 2026
+quay.io-frrouting-frr-2#
+

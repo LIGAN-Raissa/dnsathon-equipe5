@@ -1,0 +1,11 @@
+# Dépôt GitHub — Équipe 5
+__pycache__/
+*.py[cod]
+
+# Le dépôt de l'équipe résolveur est intégré comme contenu, pas comme sous-module.
+resolveur/.git/
+
+# Fichiers générés / locaux
+*.zip
+*.log
+.DS_Store
