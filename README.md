@@ -36,7 +36,7 @@ Parti de la topologie BGP brute de l'équipe 4, nous avons ajouté un validateur
 
 ### Dans GNS3
 
-Ouvrir `/home/line/GNS3/projects/Projet5DNS/IXP_and_BGP_Peering.gns3`, puis **Start all** sur les 6 nœuds.
+Ouvrir `/home/line/GNS3/projects/Projet5DNS/IXP_and_BGP_Peering.gns3`, puis **Start all** sur les 6 nœuds. Une copie du projet et de ses configurations container est fournie dans [`gns3/`](gns3/) pour archive.
 
 > Ne jamais lancer `gns3 start`. Ne jamais faire `docker restart` sur Routinator : utiliser Stop/Start depuis GNS3, sinon l'interface `eth0` injectée par GNS3 est perdue.
 
@@ -115,6 +115,7 @@ neighbor 172.16.100.x password dnsathon5
 | [`RAPPORT.md`](RAPPORT.md) | Rapport détaillé, historique complet depuis la maquette brute |
 | [`RAPPORT-DNSathon-Equipe5.docx`](RAPPORT-DNSathon-Equipe5.docx) | Version de présentation (19 pages, figures intégrées) |
 | [`generer_rapport_docx.py`](generer_rapport_docx.py) | Générateur du DOCX / PDF |
+| [`gns3/`](gns3/) | Copie du `.gns3` et des configs FRR/interface des conteneurs |
 | [`captures/`](captures/) | Captures web primaires + sorties texte, voir `captures/README.md` |
 | [`resolveur/`](resolveur/) | Dépôt reçu de l'équipe 1 : DNSdist, Unbound, Prometheus, Grafana |
 | [`GUIDE-DETAILLE.md`](GUIDE-DETAILLE.md) | Guide initial, modèles FRR/BIRD et transposition GNS3 |
