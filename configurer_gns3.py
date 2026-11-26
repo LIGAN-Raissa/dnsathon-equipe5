@@ -411,27 +411,78 @@ def clean(host, ports, prefix="10.3.0.0/25"):
     print("[NETTOYAGE] annonce et autorisations temporaires retirées :\n" + out.strip())
 
 
-def dns_test(host, ports):
-    """Teste le résolveur anycast avec drill, depuis le namespace réseau de FRR-B."""
+def ensure_whoami(project):
+    """Garantit un enregistrement TXT distinct dans chaque instance Unbound."""
+    data = json.loads(Path(project).read_text(encoding="utf-8"))
+    sites = {}
+    for node in data["topology"]["nodes"]:
+        name = node["name"].lower()
+        cid = node.get("properties", {}).get("container_id")
+        if "unbound" not in name or not cid:
+            continue
+        site = "site-C" if "-2" in name or "resolveur-2" in name else "site-A"
+        sites[site] = cid
+    for site, cid in sites.items():
+        conf = "/opt/unbound/etc/unbound/unbound.conf"
+        check = subprocess.run(
+            ["docker", "exec", cid, "sh", "-c", f"grep -q 'whoami.dnsathon.local' {conf}"],
+            capture_output=True,
+        )
+        if check.returncode != 0:
+            zone = (f'\nserver:\n'
+                    f'    local-zone: "whoami.dnsathon.local." static\n'
+                    f'    local-data: "whoami.dnsathon.local. IN TXT \\"{site}\\""\n')
+            subprocess.run(["docker", "exec", "-i", cid, "sh", "-c", f"cat >> {conf}"],
+                           input=zone, text=True, capture_output=True)
+            subprocess.run(["docker", "exec", cid, "sh", "-c",
+                            "kill -HUP $(cat /opt/unbound/etc/unbound/unbound.pid)"],
+                           capture_output=True)
+            time.sleep(1)
+    return sites
+
+
+def dns_test(host, ports, project=None, quiet=False):
+    """Teste les deux instances et le service anycast avec drill."""
     cid = CONTAINERS.get(ports["B"])
     if not cid:
         print("[ERREUR] ID du conteneur FRR-B introuvable dans la maquette.", file=sys.stderr)
         return False
-    cmd = [
-        "docker", "run", "--rm", "--network", f"container:{cid}",
-        "--entrypoint", "sh", "mvance/unbound:latest",
-        "-c", "drill @10.53.0.53 localhost A",
+    sites = ensure_whoami(project) if project else {}
+
+    def drill(server, query, net=None):
+        cmd = ["docker", "run", "--rm", "--network", f"container:{net or cid}",
+               "--entrypoint", "sh", "mvance/unbound:latest",
+               "-c", f"drill @{server} {query}"]
+        last = ""
+        for _ in range(3):
+            try:
+                proc = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+                last = (proc.stdout + proc.stderr).strip()
+                if "network error" not in last.lower():
+                    return last
+            except Exception as exc:
+                last = f"ERREUR : {exc}"
+            time.sleep(0.5)
+        return last
+
+    cases = [
+        ("cas 1 — instance site A (172.16.100.53)", "172.16.100.53",
+         "whoami.dnsathon.local TXT", "site-A", sites.get("site-A")),
+        ("cas 2 — instance site C (172.16.100.54)", "172.16.100.54",
+         "whoami.dnsathon.local TXT", "site-C", sites.get("site-C")),
+        ("service anycast (10.53.0.53)", "10.53.0.53",
+         "localhost A", "127.0.0.1", None),
     ]
-    try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
-    except Exception as exc:
-        print(f"[ERREUR] test DNS : {exc}", file=sys.stderr)
-        return False
-    output = (proc.stdout + proc.stderr).strip()
-    print(output)
-    ok = "rcode: NOERROR" in output and "127.0.0.1" in output
-    print("Test DNS : OK" if ok else "Test DNS : À VÉRIFIER")
-    return ok
+    results = []
+    for label, server, query, expected, net in cases:
+        output = drill(server, query, net)
+        ok = "rcode: NOERROR" in output and expected in output
+        results.append(ok)
+        if not quiet:
+            print(f"\n===== TEST DNS — {label} =====")
+            print(output)
+        print(f"DNS {label.split(' — ')[0]} : {'OK' if ok else 'À VÉRIFIER'}")
+    return all(results)
 
 
 def verify_router(host, port, key):
@@ -557,6 +608,8 @@ def main():
             print(run_on(args.host, ports["B"], [
                 "show ip bgp 10.53.0.53/32",
             ]).strip())
+            print("\nDNS pendant la coupure : service toujours joignable ?")
+            dns_test(args.host, ports, args.project, quiet=True)
         finally:
             print("\n===== RESTAURATION automatique du peering AS65003 =====")
             run_on(args.host, ports["C"], [
@@ -566,11 +619,13 @@ def main():
             print(run_on(args.host, ports["B"], [
                 "show ip bgp 10.53.0.53/32",
             ]).strip())
+            print("\nDNS après restauration : service joignable ?")
+            dns_test(args.host, ports, args.project, quiet=True)
         return
 
     if args.dns:
-        print("===== TEST DNS — résolveur anycast 10.53.0.53 =====")
-        dns_test(args.host, ports)
+        print("===== TEST DNS — deux instances + service anycast =====")
+        dns_test(args.host, ports, args.project)
         return
 
     if args.vrp:

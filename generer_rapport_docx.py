@@ -378,7 +378,7 @@ bullets(doc, [
     "chacun avec la même loopback 10.53.0.53/32 et des routes de retour vers les trois LAN.",
     "FRR-B voit deux chemins valid pour le /32, avec local-pref 200 : anycast réel, pas seulement schématique.",
     "Bascule vérifiée par coupure du peering de FRR-C : 2 chemins → 1 chemin → 2 chemins, service maintenu.",
-    "Test DNS reproductible : bouton « Tester le DNS (drill) » ou --dns : drill @10.53.0.53 localhost A renvoie NOERROR.",
+    "Test DNS reproductible : bouton « Tester le DNS (drill) » ou --dns : les deux instances sont interrogées séparément (TXT site-A via .53 et site-C via .54), puis le service anycast 10.53.0.53 renvoie NOERROR.",
 ])
 doc.add_paragraph(
     "L’enregistrement « whoami » distinct par instance, évoqué comme option, n’a pas été retenu : "
@@ -430,7 +430,7 @@ image(doc, "web-check.png", "Figure 1 — Console web : vérification complète 
 image(doc, "web-vrp.png", "Figure 2 — Console web : les quatre VRP et les assertions SLURM.")
 image(doc, "web-attack.png", "Figure 3 — Attaque visible : 10.3.0.0/25 est invalid, filtre retiré.")
 image(doc, "web-repair.png", "Figure 4 — Filtre réappliqué : la /25 n’est plus dans la table.")
-image(doc, "web-anycast.png", "Figure 5 — Anycast : deux chemins, coupure du site C, puis restauration.")
+image(doc, "web-anycast.png", "Figure 5 — Anycast : deux chemins, coupure du site C, puis restauration, avec test DNS à chaque phase (2 → 1 → 2 instances, toujours NOERROR).")
 image(doc, "web-dns.png", "Figure 6 — Console web : test DNS anycast, statut NOERROR.")
 image(doc, "web-interface.png", "Figure 7 — Interface web locale et ses huit boutons.")
 

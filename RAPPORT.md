@@ -168,8 +168,8 @@ Elle affiche une console colorée et 8 boutons : **Vérifier l'état**, **Appliq
 4. Cliquer sur **Réappliquer le filtre** : la `/25` devient `% Network not in table` **alors que FRR-C l'annonce toujours**, et la `/24` reste valide. C'est la preuve que le filtre RPKI, et non la suppression de l'annonce, bloque l'attaque.
 5. Cliquer sur **Vérifier l'état** pour montrer que toutes les sessions restent établies.
 6. Cliquer sur **Nettoyer la démo** pour retirer l'attaque.
-7. Cliquer sur **Afficher les VRP Routinator** (4 VRP, dont les deux `/32` anycast), puis sur **Tester l'anycast (bascule)** : deux chemins `valid`, retrait d'un site, restauration automatique.
-8. Cliquer sur **Tester le DNS (drill)** : `SERVER: 10.53.0.53` et `rcode: NOERROR`.
+7. Cliquer sur **Afficher les VRP Routinator** (4 VRP, dont les deux `/32` anycast), puis sur **Tester l'anycast (bascule)** : deux chemins `valid`, retrait d'un site, restauration automatique. Le test DNS est rejoué **à chaque phase** : deux instances actives, puis une seule restante après la coupure, puis les deux après restauration — le service répond `NOERROR` dans les trois cas.
+8. Cliquer sur **Tester le DNS (drill)** : site-A (`.53` → TXT `site-A`), site-C (`.54` → TXT `site-C`) et anycast (`10.53.0.53` → `NOERROR`).
 9. Terminer par la note utilisateur : DNSSEC protège la donnée, RPKI protège le chemin vers le résolveur.
 
 Équivalent en ligne de commande :
@@ -221,7 +221,7 @@ Checklist initiale — **satisfaite par convention de lab** faute d'IP/AS fourni
 | Deux instances, même IP | `Unbound-Resolveur` (`.53`) et `Unbound-Resolveur-2` (`.54`) |
 | VRP correspondants | 2 assertions `/32`, `maxLength 32`, dans le SLURM |
 | Preuve de validation | `rpki validation-state: valid` sur FRR-B, deux chemins |
-| Test DNS reproductible | `drill @10.53.0.53 localhost A` → `SERVER: 10.53.0.53` |
+| Test DNS reproductible | `--dns` : site-A (`.53` → TXT `site-A`), site-C (`.54` → TXT `site-C`) et anycast (`10.53.0.53` → `NOERROR`) |
 
 La suite complète DNSdist/DoH/DoT du dépôt reste disponible si l'équipe veut présenter ses 8 tests tels quels ; notre intégration GNS3, elle, est terminée et autonome.
 

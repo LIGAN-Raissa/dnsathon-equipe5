@@ -1,5 +1,45 @@
-# Capture 11 — test DNS anycast
-;; ->>HEADER<<- opcode: QUERY, rcode: NOERROR, id: 15360
+===== TEST DNS — deux instances + service anycast =====
+
+===== TEST DNS — cas 1 — instance site A (172.16.100.53) =====
+;; ->>HEADER<<- opcode: QUERY, rcode: NOERROR, id: 64154
+;; flags: qr aa rd ra ; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0 
+;; QUESTION SECTION:
+;; whoami.dnsathon.local.	IN	TXT
+
+;; ANSWER SECTION:
+whoami.dnsathon.local.	3600	IN	TXT	"\"site-A\""
+
+;; AUTHORITY SECTION:
+
+;; ADDITIONAL SECTION:
+
+;; Query time: 0 msec
+;; SERVER: 172.16.100.53
+;; WHEN: Thu Nov 26 17:03:24 2026
+;; MSG SIZE  rcvd: 60
+DNS cas 1 : OK
+
+===== TEST DNS — cas 2 — instance site C (172.16.100.54) =====
+;; ->>HEADER<<- opcode: QUERY, rcode: NOERROR, id: 33430
+;; flags: qr aa rd ra ; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0 
+;; QUESTION SECTION:
+;; whoami.dnsathon.local.	IN	TXT
+
+;; ANSWER SECTION:
+whoami.dnsathon.local.	3600	IN	TXT	"\"site-C\""
+
+;; AUTHORITY SECTION:
+
+;; ADDITIONAL SECTION:
+
+;; Query time: 0 msec
+;; SERVER: 172.16.100.54
+;; WHEN: Thu Nov 26 17:03:24 2026
+;; MSG SIZE  rcvd: 60
+DNS cas 2 : OK
+
+===== TEST DNS — service anycast (10.53.0.53) =====
+;; ->>HEADER<<- opcode: QUERY, rcode: NOERROR, id: 43586
 ;; flags: qr aa rd ra ; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0 
 ;; QUESTION SECTION:
 ;; localhost.	IN	A
@@ -13,5 +53,6 @@ localhost.	10800	IN	A	127.0.0.1
 
 ;; Query time: 0 msec
 ;; SERVER: 10.53.0.53
-;; WHEN: Thu Nov 26 13:02:09 2026
+;; WHEN: Thu Nov 26 17:03:24 2026
 ;; MSG SIZE  rcvd: 43
+DNS service anycast (10.53.0.53) : OK

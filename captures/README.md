@@ -9,7 +9,7 @@
 | Attaque visible (`invalid`) | `web-attack.png` |
 | Rejet par le filtre (`Network not in table`) | `web-repair.png` |
 | Nettoyage | `web-clean.png` |
-| Anycast : 2 chemins → 1 chemin → 2 chemins | `web-anycast.png` |
+| Anycast : 2 chemins → 1 chemin → 2 chemins, DNS testé à chaque phase | `web-anycast.png` |
 | Test DNS (`NOERROR`) | `web-dns.png` |
 | Interface seule | `web-interface.png` |
 

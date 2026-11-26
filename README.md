@@ -73,8 +73,8 @@ python3 configurer_gns3.py --dns       # drill @10.53.0.53 localhost A
 Points clés à commenter :
 
 - `--repair` ne supprime pas l'annonce : c'est bien `ROV-IN` qui bloque.
-- `--anycast` coupe réellement le peering de FRR-C puis le restaure.
-- Test DNS : bouton **Tester le DNS (drill)** ou `--dns` → `SERVER: 10.53.0.53`, `rcode: NOERROR`.
+- `--anycast` coupe réellement le peering de FRR-C puis le restaure, avec un **test DNS à chaque phase** : 2 instances actives → 1 instance restante → 2 instances restaurées, service toujours `NOERROR`.
+- Test DNS : bouton **Tester le DNS (drill)** ou `--dns` → teste les **deux instances** (`site-A` via `.53`, `site-C` via `.54`) puis le service anycast `10.53.0.53`, tous en `NOERROR`.
 
 ## 6. Sécurité ajoutée
 
