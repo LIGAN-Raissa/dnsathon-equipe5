@@ -1,4 +1,4 @@
-# DNSathon 2026 — Équipe 5 — Sécurité du routage par RPKI
+# DNSathon 2026 — Équipe 5 — Sécurisation du routage et résilience DNS (RPKI, anycast)
 
 Démonstration complète et reproductible : une annonce BGP frauduleuse est détectée puis rejetée par RPKI, tandis qu'un résolveur DNS anycast reste joignable.
 

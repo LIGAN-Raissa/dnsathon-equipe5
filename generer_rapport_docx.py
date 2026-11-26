@@ -143,7 +143,7 @@ r.font.color.rgb = VERT
 
 t = doc.add_paragraph()
 t.alignment = WD_ALIGN_PARAGRAPH.CENTER
-r = t.add_run("Activité 5\nSécurité du routage par RPKI")
+r = t.add_run("Activité 5\nSécurisation du routage et résilience DNS\n(RPKI, anycast)")
 r.bold = True
 r.font.size = Pt(27)
 r.font.color.rgb = BLEU

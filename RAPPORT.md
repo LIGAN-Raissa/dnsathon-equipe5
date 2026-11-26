@@ -1,4 +1,4 @@
-# Activité 5 — Sécurité du routage par RPKI
+# Activité 5 — Sécurisation du routage et résilience DNS (RPKI, anycast)
 
 **Équipe 5 — DNSathon 2026 — 26 novembre 2026**
 
