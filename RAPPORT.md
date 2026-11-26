@@ -158,7 +158,7 @@ Options : `--check` (vérification seule), `--rpki` (défaut), `--no-rpki`, `--a
 
 Fichier : `/home/line/Bureau/dnsathon/equipe5/demo-web.py`, écoute uniquement sur `127.0.0.1:8080`.
 
-Elle affiche une console colorée et 7 boutons : **Vérifier l'état**, **Appliquer la config**, **Lancer l'attaque**, **Réappliquer le filtre**, **Nettoyer la démo**, **Afficher les VRP Routinator**, **Tester l'anycast (bascule)**. Chaque bouton appelle le script Python avec une action autorisée par une liste blanche : aucune commande arbitraire n'est exécutée depuis le navigateur.
+Elle affiche une console colorée et 8 boutons : **Vérifier l'état**, **Appliquer la config**, **Lancer l'attaque**, **Réappliquer le filtre**, **Nettoyer la démo**, **Afficher les VRP Routinator**, **Tester l'anycast (bascule)**, **Tester le DNS (drill)**. Chaque bouton appelle le script Python avec une action autorisée par une liste blanche : aucune commande arbitraire n'est exécutée depuis le navigateur.
 
 ## 10. Procédure de démonstration devant le jury
 
@@ -169,7 +169,8 @@ Elle affiche une console colorée et 7 boutons : **Vérifier l'état**, **Appliq
 5. Cliquer sur **Vérifier l'état** pour montrer que toutes les sessions restent établies.
 6. Cliquer sur **Nettoyer la démo** pour retirer l'attaque.
 7. Cliquer sur **Afficher les VRP Routinator** (4 VRP, dont les deux `/32` anycast), puis sur **Tester l'anycast (bascule)** : deux chemins `valid`, retrait d'un site, restauration automatique.
-8. Terminer par la note utilisateur : DNSSEC protège la donnée, RPKI protège le chemin vers le résolveur.
+8. Cliquer sur **Tester le DNS (drill)** : `SERVER: 10.53.0.53` et `rcode: NOERROR`.
+9. Terminer par la note utilisateur : DNSSEC protège la donnée, RPKI protège le chemin vers le résolveur.
 
 Équivalent en ligne de commande :
 
@@ -180,6 +181,9 @@ python3 configurer_gns3.py --attack
 python3 configurer_gns3.py --repair
 python3 configurer_gns3.py --check
 python3 configurer_gns3.py --clean
+python3 configurer_gns3.py --vrp
+python3 configurer_gns3.py --anycast
+python3 configurer_gns3.py --dns
 ```
 
 ## 11. État validé

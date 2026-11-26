@@ -411,6 +411,29 @@ def clean(host, ports, prefix="10.3.0.0/25"):
     print("[NETTOYAGE] annonce et autorisations temporaires retirées :\n" + out.strip())
 
 
+def dns_test(host, ports):
+    """Teste le résolveur anycast avec drill, depuis le namespace réseau de FRR-B."""
+    cid = CONTAINERS.get(ports["B"])
+    if not cid:
+        print("[ERREUR] ID du conteneur FRR-B introuvable dans la maquette.", file=sys.stderr)
+        return False
+    cmd = [
+        "docker", "run", "--rm", "--network", f"container:{cid}",
+        "--entrypoint", "sh", "mvance/unbound:latest",
+        "-c", "drill @10.53.0.53 localhost A",
+    ]
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+    except Exception as exc:
+        print(f"[ERREUR] test DNS : {exc}", file=sys.stderr)
+        return False
+    output = (proc.stdout + proc.stderr).strip()
+    print(output)
+    ok = "rcode: NOERROR" in output and "127.0.0.1" in output
+    print("Test DNS : OK" if ok else "Test DNS : À VÉRIFIER")
+    return ok
+
+
 def verify_router(host, port, key):
     """Affiche « show ip bgp summary » et vérifie que les 2 voisins IXP sont Established."""
     neighbors = {"A": ("172.16.100.2", "172.16.100.3"),
@@ -490,6 +513,8 @@ def main():
     ap.add_argument("--vrp", action="store_true", help="affiche les VRP du cache RPKI (Routinator)")
     ap.add_argument("--anycast", action="store_true",
                     help="prouve l'anycast : 2 chemins valides, puis bascule et restauration")
+    ap.add_argument("--dns", action="store_true",
+                    help="teste le résolveur anycast : drill @10.53.0.53 localhost A")
     args = ap.parse_args()
 
     try:
@@ -541,6 +566,11 @@ def main():
             print(run_on(args.host, ports["B"], [
                 "show ip bgp 10.53.0.53/32",
             ]).strip())
+        return
+
+    if args.dns:
+        print("===== TEST DNS — résolveur anycast 10.53.0.53 =====")
+        dns_test(args.host, ports)
         return
 
     if args.vrp:

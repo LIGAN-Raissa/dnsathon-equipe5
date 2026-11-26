@@ -355,8 +355,8 @@ h(doc, "2.6 Phase 5 — Interface web de démonstration", 2)
 doc.add_paragraph(
     "demo-web.py expose une console locale sur http://127.0.0.1:8080/. Chaque bouton appelle le script Python avec "
     "une action autorisée par une liste blanche : aucune commande arbitraire n’est acceptée depuis le navigateur. "
-    "Sept actions sont disponibles : Vérifier l’état, Appliquer la config, Lancer l’attaque, Réappliquer le filtre, "
-    "Nettoyer la démo, Afficher les VRP Routinator et Tester l’anycast."
+    "Huit actions sont disponibles : Vérifier l’état, Appliquer la config, Lancer l’attaque, Réappliquer le filtre, "
+    "Nettoyer la démo, Afficher les VRP Routinator, Tester l’anycast et Tester le DNS (drill)."
 )
 doc.add_paragraph(
     "Un mode capture ( ?action=…&auto=1 ) exécute automatiquement une action et agrandit la console, "
@@ -378,7 +378,7 @@ bullets(doc, [
     "chacun avec la même loopback 10.53.0.53/32 et des routes de retour vers les trois LAN.",
     "FRR-B voit deux chemins valid pour le /32, avec local-pref 200 : anycast réel, pas seulement schématique.",
     "Bascule vérifiée par coupure du peering de FRR-C : 2 chemins → 1 chemin → 2 chemins, service maintenu.",
-    "Test DNS reproductible : drill @10.53.0.53 localhost A renvoie NOERROR.",
+    "Test DNS reproductible : bouton « Tester le DNS (drill) » ou --dns : drill @10.53.0.53 localhost A renvoie NOERROR.",
 ])
 doc.add_paragraph(
     "L’enregistrement « whoami » distinct par instance, évoqué comme option, n’a pas été retenu : "
@@ -417,7 +417,7 @@ table(doc, ["Élément demandé", "Capture"], [
     ["Config rpki + route-map ROV-IN", "07-routemap-ROV-IN.txt"],
     ["Anycast : deux chemins valid", "web-anycast.png · 08-anycast-avant.txt"],
     ["Bascule anycast avant / pendant / après", "web-anycast.png · 08/09/10-anycast-*.txt"],
-    ["Test DNS", "11-test-DNS.txt"],
+    ["Test DNS", "web-dns.png · 11-test-DNS.txt"],
     ["Interface web colorée", "web-interface.png / 13-interface-web.png"],
 ], [3.6, 2.9])
 p = doc.add_paragraph()
@@ -431,7 +431,8 @@ image(doc, "web-vrp.png", "Figure 2 — Console web : les quatre VRP et les asse
 image(doc, "web-attack.png", "Figure 3 — Attaque visible : 10.3.0.0/25 est invalid, filtre retiré.")
 image(doc, "web-repair.png", "Figure 4 — Filtre réappliqué : la /25 n’est plus dans la table.")
 image(doc, "web-anycast.png", "Figure 5 — Anycast : deux chemins, coupure du site C, puis restauration.")
-image(doc, "web-interface.png", "Figure 6 — Interface web locale et ses sept boutons.")
+image(doc, "web-dns.png", "Figure 6 — Console web : test DNS anycast, statut NOERROR.")
+image(doc, "web-interface.png", "Figure 7 — Interface web locale et ses huit boutons.")
 
 # --- Procédure --------------------------------------------------------------
 h(doc, "5. Procédure de démonstration devant le jury")
@@ -444,7 +445,7 @@ numbered(doc, [
     "Cliquer sur Réappliquer le filtre : la /25 devient % Network not in table, alors que FRR-C l’annonce toujours.",
     "Cliquer sur Vérifier l’état : toutes les sessions restent établies, la /24 reste valide.",
     "Cliquer sur Tester l’anycast : deux chemins valid, puis un seul pendant la coupure, puis deux à nouveau.",
-    "Montrer le test DNS : drill @10.53.0.53 localhost A, statut NOERROR.",
+    "Cliquer sur Tester le DNS (drill) : SERVER 10.53.0.53, statut NOERROR.",
     "Conclure par la note utilisateur : DNSSEC protège la donnée, RPKI protège le chemin, l’anycast protège la disponibilité.",
 ])
 
@@ -491,7 +492,7 @@ bullets(doc, [
 h(doc, "9. Livrables et organisation des fichiers")
 table(doc, ["Fichier", "Contenu"], [
     ["configurer_gns3.py", "Configuration complète, ROA, attaque, réparation, nettoyage, VRP, anycast, vérification."],
-    ["demo-web.py", "Interface locale à sept boutons, liste blanche, mode capture."],
+    ["demo-web.py", "Interface locale à huit boutons, liste blanche, mode capture."],
     ["slurm-roa-lab.json", "Quatre assertions SLURM injectées dans Routinator."],
     ["captures/", "Captures web primaires, sorties texte, README de correspondance."],
     ["resolveur/", "Dépôt reçu de l’équipe 1 (pile DNSdist/Unbound/monitoring)."],

@@ -67,13 +67,14 @@ python3 configurer_gns3.py --attack    # /25 visible, invalid, filtre retiré
 python3 configurer_gns3.py --repair    # /25 rejetée, annonce toujours présente sur FRR-C
 python3 configurer_gns3.py --clean     # retrait de l'annonce attaquante
 python3 configurer_gns3.py --anycast   # 2 chemins → 1 chemin → 2 chemins
+python3 configurer_gns3.py --dns       # drill @10.53.0.53 localhost A
 ```
 
 Points clés à commenter :
 
 - `--repair` ne supprime pas l'annonce : c'est bien `ROV-IN` qui bloque.
 - `--anycast` coupe réellement le peering de FRR-C puis le restaure.
-- Test DNS : `drill @10.53.0.53 localhost A` → `rcode: NOERROR`.
+- Test DNS : bouton **Tester le DNS (drill)** ou `--dns` → `SERVER: 10.53.0.53`, `rcode: NOERROR`.
 
 ## 6. Sécurité ajoutée
 
@@ -110,7 +111,7 @@ neighbor 172.16.100.x password dnsathon5
 | Fichier | Rôle |
 |---|---|
 | [`configurer_gns3.py`](configurer_gns3.py) | Configuration, ROA, attaque, réparation, nettoyage, VRP, anycast, vérification |
-| [`demo-web.py`](demo-web.py) | Interface locale à 7 boutons, mode capture `?action=…&auto=1` |
+| [`demo-web.py`](demo-web.py) | Interface locale à 8 boutons, mode capture `?action=…&auto=1` |
 | [`slurm-roa-lab.json`](slurm-roa-lab.json) | 4 assertions SLURM injectées dans Routinator |
 | [`RAPPORT.md`](RAPPORT.md) | Rapport détaillé, historique complet depuis la maquette brute |
 | [`RAPPORT-DNSathon-Equipe5.docx`](RAPPORT-DNSathon-Equipe5.docx) | Version de présentation (19 pages, figures intégrées) |

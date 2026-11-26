@@ -25,6 +25,7 @@ ACTIONS = {
     "clean": ["--clean"],
     "vrp": ["--vrp"],
     "anycast": ["--anycast"],
+    "dns": ["--dns"],
 }
 LABELS = {
     "check": "Vérifier l'état",
@@ -34,6 +35,7 @@ LABELS = {
     "clean": "Nettoyer la démo",
     "vrp": "Afficher les VRP Routinator",
     "anycast": "Tester l'anycast (bascule)",
+    "dns": "Tester le DNS (drill)",
 }
 
 HTML = r"""<!doctype html>
@@ -106,6 +108,7 @@ HTML = r"""<!doctype html>
     <button onclick="run('clean')">🧽 Nettoyer la démo</button>
     <button class="good" onclick="run('vrp')">📜 Afficher les VRP Routinator</button>
     <button onclick="run('anycast')">🌐 Tester l'anycast (bascule)</button>
+    <button class="good" onclick="run('dns')">🔎 Tester le DNS (drill)</button>
     <button class="ghost" onclick="clearConsole()">🧹 Effacer</button>
   </div>
 
